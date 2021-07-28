@@ -40,6 +40,20 @@ namespace XamarinFormsEventAggregator.ViewModels
             SomarViewCommand = new MvvmHelpers.Commands.Command(async () => await SomarViewCommandExecute());
         }
 
+        // public MainViewModel(IEventAggregator eventAggregator)
+        // {
+        //     _texto = "Soma 0";
+        //     _EventAggregator = eventAggregator;
+
+        //     //Registra o Evento
+        //     EventAggregator.Instance.RegisterHandler<SomarMessage>(
+        //SomarHandler);
+
+        //     SomarViewCommand = new MvvmHelpers.Commands.Command(async () => await SomarViewCommandExecute());
+        //  }
+
+        
+
         private void SomarHandler(
     SomarMessage message)
         {
@@ -49,7 +63,11 @@ namespace XamarinFormsEventAggregator.ViewModels
 
         private async Task SomarViewCommandExecute()
         {
-            await Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(App.ServiceProvider.GetService<SomarPage>());
+            //await Xamarin.Forms.Application.Current.
+            //MainPage.Navigation.PushAsync(new SomarPage());
+
+            await Xamarin.Forms.Application.Current.
+                MainPage.Navigation.PushAsync(App.ServiceProvider.GetService<SomarPage>());
         }
     }
 }

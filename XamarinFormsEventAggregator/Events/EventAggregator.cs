@@ -7,13 +7,30 @@ namespace XamarinFormsEventAggregator.Events
 {
     public class EventAggregator : IEventAggregator
     {
-    
+
+        private readonly List<Delegate> _handlers = new List<Delegate>();
+
+        private readonly SynchronizationContext _synchronizationContext;
+
         public EventAggregator()
         {
-            mSynchronizationContext = SynchronizationContext.Current;
+            _synchronizationContext = SynchronizationContext.Current;
         }
 
-    
+        //private static EventAggregator instance;
+        //public static EventAggregator Instance
+        //{
+        //    get
+        //    {
+        //        if (instance == null)
+        //        {
+        //            instance = new EventAggregator();
+        //        }
+        //        return instance;
+        //    }
+        //}
+
+
         public void SendMessage<T>(T message)
         {
             if (message == null)
@@ -21,9 +38,9 @@ namespace XamarinFormsEventAggregator.Events
                 return;
             }
 
-            if (mSynchronizationContext != null)
+            if (_synchronizationContext != null)
             {
-                mSynchronizationContext.Send(
+                _synchronizationContext.Send(
                     m => Dispatch<T>((T)m),
                     message);
             }
@@ -41,9 +58,9 @@ namespace XamarinFormsEventAggregator.Events
                 return;
             }
 
-            if (mSynchronizationContext != null)
+            if (_synchronizationContext != null)
             {
-                mSynchronizationContext.Post(
+                _synchronizationContext.Post(
                     m => Dispatch<T>((T)m),
                     message);
             }
@@ -60,7 +77,7 @@ namespace XamarinFormsEventAggregator.Events
                 throw new ArgumentNullException("eventHandler");
             }
 
-            mHandlers.Add(eventHandler);
+            _handlers.Add(eventHandler);
             return eventHandler;
         }
 
@@ -72,7 +89,7 @@ namespace XamarinFormsEventAggregator.Events
                 throw new ArgumentNullException("eventHandler");
             }
 
-            mHandlers.Remove(eventHandler);
+            _handlers.Remove(eventHandler);
         }
 
 
@@ -84,16 +101,14 @@ namespace XamarinFormsEventAggregator.Events
             }
 
             var compatibleHandlers
-                = mHandlers.OfType<Action<T>>()
+                = _handlers.OfType<Action<T>>()
                     .ToList();
-            foreach (var h in compatibleHandlers)
+            foreach (var handler in compatibleHandlers)
             {
-                h(message);
+                handler(message);
             }
         }
 
-        private readonly List<Delegate> mHandlers = new List<Delegate>();
-
-        private readonly SynchronizationContext mSynchronizationContext;
+      
     }
 }

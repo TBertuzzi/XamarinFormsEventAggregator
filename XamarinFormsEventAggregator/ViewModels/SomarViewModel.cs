@@ -25,6 +25,12 @@ namespace XamarinFormsEventAggregator.ViewModels
             }
         }
 
+        //public SomarViewModel()
+        //{
+        //    _texto = "Soma 0";
+
+        //    SomarCommand = new MvvmHelpers.Commands.Command(async () => await SomarCommandExecute());
+        //}
 
         public SomarViewModel(IEventAggregator eventAggregator)
         {
@@ -45,6 +51,8 @@ namespace XamarinFormsEventAggregator.ViewModels
             {
                 Texto = texto
             };
+
+            //EventAggregator.Instance.SendMessage(SomarMessage);
 
             _EventAggregator.SendMessage(SomarMessage);
 

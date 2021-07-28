@@ -37,6 +37,7 @@ namespace XamarinFormsEventAggregator
             services.AddTransient<ISomarViewModel, SomarViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<SomarPage>();
+            //Importante ser singleton
             services.AddSingleton<IEventAggregator, EventAggregator>();
             services.AddSingleton<App>();
           
